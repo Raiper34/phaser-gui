@@ -12,13 +12,17 @@
     }
   },
   "scripts": {
-    "build": "tsc && vite build"
+    "build": "tsc && vite build",
+    "docs": "typedoc src/index.ts",
+    "deploy": "npm run docs && netlify deploy --dir=docs --prod"
   },
   "author": "Raiper34",
   "license": "MIT",
   "description": "",
   "dependencies": {
-    "phaser": "^3.88.2"
+    "phaser": "^3.88.2",
+    "typedoc": "^0.28.14",
+    "typedoc-material-theme": "^1.4.0"
   },
   "devDependencies": {
     "@types/node": "^22.13.5",

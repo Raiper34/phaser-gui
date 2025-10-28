@@ -1,0 +1,14 @@
+/* You can add global styles to this file, and also import other style files */
+@import "bulma/bulma.scss";
+@import "@fortawesome/fontawesome-free/css/all.css";
+
+:root {
+  --bulma-primary-h: 261deg;
+  --bulma-primary-s: 51%;
+  --bulma-primary-l: 47%;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+}

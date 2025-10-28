@@ -4,7 +4,7 @@ const CLICK_EFFECT_IN = {duration: 70, ease: Phaser.Math.Easing.Bounce.InOut};
 const CLICK_EFFECT_OUT = {duration: 70, ease: Phaser.Math.Easing.Bounce.InOut};
 const CLICK_SCALE_INCREASE = 0.2;
 
-export abstract class Button<T> extends Phaser.GameObjects.Container {
+export class Button<T> extends Phaser.GameObjects.Container {
 
     protected background!: Phaser.GameObjects.Sprite;
     protected isDisabled = false;
@@ -13,10 +13,10 @@ export abstract class Button<T> extends Phaser.GameObjects.Container {
     protected initialScaleY = 1;
     protected value!: T;
 
-    protected constructor(
-        public readonly scene: Phaser.Scene,
-        public x: number,
-        public y: number,
+    constructor(
+        public override readonly scene: Phaser.Scene,
+        public override x: number,
+        public override y: number,
         protected readonly texture: string,
         protected readonly frame: string | number,
         protected readonly clickCallback: (value?: T) => void,
@@ -65,7 +65,7 @@ export abstract class Button<T> extends Phaser.GameObjects.Container {
         this.background.setFrame(this.isDisabled && this.disabledFrame ? this.disabledFrame : this.frame);
     }
 
-    setScale(x: number, y?: number): this {
+    override setScale(x: number, y?: number): this {
         this.initialScaleX = x;
         this.initialScaleY = y ?? x;
         super.setScale(x, y);
