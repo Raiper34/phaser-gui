@@ -15,14 +15,16 @@ export class Button<T> extends Phaser.GameObjects.Container {
 
     constructor(
         public override readonly scene: Phaser.Scene,
-        public override x: number,
-        public override y: number,
-        protected readonly texture: string,
-        protected readonly frame: string | number,
-        protected readonly clickCallback: (value?: T) => void,
-        protected readonly disabledFrame?: string | number,
+        protected readonly config: {
+            x: number,
+            y: number,
+            texture: string
+            frame?: string | number,
+            clickCallback?: (value?: T) => void,
+            disabledFrame?: string | number,
+        },
     ) {
-        super(scene, x, y);
+        super(scene, config.x, config.y);
         this.initBackground();
         this.addClickMethod();
         this.setScrollFactor(0);
@@ -30,7 +32,7 @@ export class Button<T> extends Phaser.GameObjects.Container {
     }
 
     protected initBackground(): void {
-        this.background = this.scene.add.sprite(0, 0, this.texture, this.frame);
+        this.background = this.scene.add.sprite(0, 0, this.config.texture, this.config.frame);
         this.add(this.background);
         this.setSize(this.background.width, this.background.height);
     }
@@ -47,7 +49,7 @@ export class Button<T> extends Phaser.GameObjects.Container {
         if (!this.isDisabled) {
             this.clickEffect();
             this.changeValueBeforeClick(this.value);
-            this.clickCallback(this.value);
+            this.config.clickCallback && this.config.clickCallback(this.value);
         }
         event?.stopPropagation();
     }
@@ -62,7 +64,7 @@ export class Button<T> extends Phaser.GameObjects.Container {
 
     setDisableState(isDisabled: boolean): void {
         this.isDisabled = isDisabled;
-        this.background.setFrame(this.isDisabled && this.disabledFrame ? this.disabledFrame : this.frame);
+        this.background.setFrame(this.isDisabled && this.config.disabledFrame ? this.config.disabledFrame : this.config.frame!); // todo !
     }
 
     override setScale(x: number, y?: number): this {

@@ -2,14 +2,10 @@
   <div class="hero-body">
     <div class="container">
       <p class="title">Phaser GUI</p>
-      <p class="subtitle">
-        TODO
-      </p>
+      <p class="subtitle">Library with GUI components for Phaser3 games</p>
       <div class="tile">
         <div class="tile is-9">
-          <div class="container">
-            TODO
-          </div>
+          <div class="container"></div>
         </div>
       </div>
     </div>
@@ -19,36 +15,33 @@
 <section class="hero">
   <div class="hero-body">
     <div class="container">
-      <div class="buttons has-addons is-centered">
-        <button class="button is-primary">Button</button>
-        <button class="button">Modal</button>
-      </div>
-      <hr>
-      <div class="is-flex is-justify-content-center" [formGroup]="form">
-        <div class="field">
-          <label class="label">X</label>
-          <div class="control">
-            <input class="input" type="number" formControlName="x">
-          </div>
+      <p class="subtitle">Playground</p>
+      <div class="grid">
+        <div class="cell"><div class="buttons has-addons is-centered">
+          <button class="button is-primary" *ngFor="let story of stories | keyvalue" (click)="changeStory(story.value)">{{story.key}}</button>
         </div>
-        <div class="field">
-          <label class="label">Y</label>
-          <div class="control">
-            <input class="input" type="number" formControlName="y">
-          </div>
+          <hr>
+          <div class="is-flex is-justify-content-center" [formGroup]="form">
+            <ng-container *ngFor="let control of form.controls | keyvalue">
+              <div class="field">
+                <label class="label">{{control.key}}</label>
+                <div class="control">
+                  <input class="input" [formControlName]="control.key">
+                </div>
+              </div>
+            </ng-container>
+          </div></div>
       </div>
-      </div>
-      <div id="phaser"></div>
     </div>
   </div>
 </section>
+<div class="cell" id="phaser"></div>
 
 
 <footer class="footer">
   <div class="content has-text-centered">
     <p>
-      <strong>Ngx focus control</strong> by <a href="https://gulan.eu">Filip Raiper34 Gulan</a>. The source code is
-      licensed
+      <strong>Phaser GUI</strong> by <a href="https://gulan.eu">Filip Raiper34 Gulan</a>. The source code is licensed
       <a href="http://opensource.org/licenses/mit-license.php">MIT</a>. The website content
       is licensed <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY NC SA 4.0</a>.
     </p>

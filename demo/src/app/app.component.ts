@@ -1,64 +1,39 @@
-import { Component } from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import 'phaser'
-import {Button} from '@lib/button';
 import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
-
-const DEFAULT_WIDTH = 1000;
-const DEFAULT_HEIGHT = 500;
+import {Showcase} from './showcase';
+import {CommonModule} from '@angular/common';
+import {ButtonStory} from './button.story';
+import {BaseStory} from './base.story';
+import {TextButtonStory} from './text-button.story';
 
 @Component({
   selector: 'app-root',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
-  form: FormGroup;
-
-  constructor(private readonly fb: FormBuilder) {
-    this.form = this.fb.group({
-      x: 0,
-      y: 0,
-    });
+  form!: FormGroup;
+  story!: BaseStory;
+  showcase!: Showcase;
+  stories = {
+    button: ButtonStory,
+    textButton: TextButtonStory,
   }
+
+  constructor(private readonly fb: FormBuilder) {}
 
   ngOnInit(): void {
-    const config = {
-      type: Phaser.AUTO,
-      parent: 'phaser',
-      scale: {
-        parent: 'phaser',
-        mode: Phaser.Scale.FIT,
-        autoCenter: Phaser.Scale.CENTER_BOTH,
-        width: DEFAULT_WIDTH,
-        height: DEFAULT_HEIGHT
-      },
-      scene: Example,
-    };
-    const game = new Phaser.Game(config as unknown as Phaser.Types.Core.GameConfig);
-    (game as any).form = this.form;
-  }
-}
-
-class Example extends Phaser.Scene
-{
-
-  preload ()
-  {
-    this.load.setBaseURL('https://labs.phaser.io');
-
-    this.load.image('sky', 'assets/skies/space3.png');
-    this.load.image('logo', 'assets/sprites/phaser3-logo.png');
-    this.load.image('red', 'assets/particles/red.png');
+    this.changeStory(ButtonStory);
   }
 
-  create ()
-  {
-    let btn = new Button(this, DEFAULT_WIDTH/2, DEFAULT_HEIGHT/2, 'red', 'red', () => {});
-    (this.game as any).form.valueChanges.subscribe(({x, y}: {x: number, y: number}) => {
-      btn.destroy();
-      btn = new Button(this, x, y, 'red', 'red', () => {console.log('Clicked');})
-    });
+  changeStory(story: any) {
+    this.story = new story();
+    this.form = this.fb.group(this.story.params());
+    this.showcase?.destroy();
+    this.showcase = new Showcase(this.form, this.story);
   }
 }
